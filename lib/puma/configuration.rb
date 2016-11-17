@@ -1,6 +1,7 @@
 require 'puma/rack/builder'
 require 'puma/plugin'
 require 'puma/const'
+require 'puma/commonlogger'
 
 module Puma
 
@@ -170,6 +171,7 @@ module Puma
         :min_threads => 0,
         :max_threads => 16,
         :log_requests => false,
+        :log_class => Puma::CommonLogger,
         :debug => false,
         :binds => ["tcp://#{DefaultTCPHost}:#{DefaultTCPPort}"],
         :workers => 0,
@@ -254,7 +256,8 @@ module Puma
       if @options[:log_requests]
         require 'puma/commonlogger'
         logger = @options[:logger]
-        found = CommonLogger.new(found, logger)
+        log_class = @options[:log_class]
+        found = log_class.new(found, logger)
       end
 
       ConfigMiddleware.new(self, found)

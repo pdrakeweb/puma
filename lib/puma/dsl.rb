@@ -220,6 +220,12 @@ module Puma
       @options[:log_requests] = which
     end
 
+    # Define request logging class
+    #
+    def log_class(klass)
+      @options[:log_class] = klass
+    end
+
     # Show debugging info
     #
     def debug
